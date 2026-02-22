@@ -9,7 +9,7 @@ cd `dirname $0`
 ./nrf802154_sniffer.py --extcap-interface /dev/ttyACM0 --fifo "$TMPDIR/foo.pcap" --capture &
 
 SNIFFPID=$!
-trap 'rm -rf -- "$TMPDIR"; kill -9 $SNIFFPID' EXIT
+trap 'rm -rf -- "$TMPDIR"; kill $SNIFFPID' EXIT
 
 tail -F -n +1 "$TMPDIR/foo.pcap"
 
