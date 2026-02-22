@@ -1,17 +1,15 @@
 #!/bin/sh
 
 TMPDIR=`mktemp -d`
+touch "$TMPDIR/foo.pcap"
 trap 'rm -rf -- "$TMPDIR"' EXIT
 
 cd `dirname $0`
 
-./nrf802154_sniffer.py --extcap-interface /dev/ttyACM0 --fifo $TMPDIR/foo.pcap --capture &
+./nrf802154_sniffer.py --extcap-interface /dev/ttyACM0 --fifo "$TMPDIR/foo.pcap" --capture &
 
 SNIFFPID=$!
 trap 'rm -rf -- "$TMPDIR"; kill -9 $SNIFFPID' EXIT
 
-sleep 1
-ls $TMPDIR
-
-tail -f -n +1 $TMPDIR/foo.pcap
+tail -F -n +1 "$TMPDIR/foo.pcap"
 
