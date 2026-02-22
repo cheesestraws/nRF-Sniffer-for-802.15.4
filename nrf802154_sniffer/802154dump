@@ -6,5 +6,9 @@ trap 'rm -rf -- "$TMPDIR"' EXIT
 cd `dirname $0`
 
 ./nrf802154_sniffer.py --extcap-interface /dev/ttyACM0 --fifo $TMPDIR/foo.pcap --capture &
+
+SNIFFPID=$!
+trap 'rm -rf -- "$TMPDIR"; kill -9 $SNIFFPID' EXIT
+
 tail -f $TMPDIR/foo.pcap
 
