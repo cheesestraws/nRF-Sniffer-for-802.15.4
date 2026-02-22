@@ -11,5 +11,7 @@ SNIFFPID=$!
 trap 'rm -rf -- "$TMPDIR"; kill -9 $SNIFFPID' EXIT
 
 sleep 1
+ls $TMPDIR
+
 tail -f -n +1 $TMPDIR/foo.pcap
 
