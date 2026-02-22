@@ -1,2 +1,10 @@
 #!/bin/sh
-echo farts
+
+TMPDIR=`mktemp -d`
+trap 'rm -rf -- "$TMPDIR"' EXIT
+
+cd `dirname $0`
+
+./nrf802154_sniffer.py --extcap-interface /dev/ttyACM0 --fifo $TMPDIR/foo.pcap --capture &
+tail -f $TMPDIR/foo.pcap
+
